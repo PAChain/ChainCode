@@ -1,0 +1,16 @@
+[
+  {
+    "seatid": 1,
+    "number": "",
+    "name": "President",
+    "office": "President",
+    "state": "US",
+    "county": "",
+    "city": "",
+    "level": 0,
+    "candidateids": [
+      1,
+      2
+    ]
+  }
+]

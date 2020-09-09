@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "es2017",
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "declaration": true,
+        "sourceMap": false,
+        "removeComments":true
+    },
+    "include": [
+        "./common/**/**/*",
+        "./user/**/**/*",
+        "./ballot/**/**/*",
+        "./voted/**/**/*",
+        "./app.ts"
+    ]
+}
