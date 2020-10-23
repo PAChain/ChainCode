@@ -12,5 +12,33 @@
       1,
       2
     ]
+  },
+  {
+    "seatid": 2,
+    "number": "1",
+    "name": "District 1",
+    "office": "U.S.House",
+    "state": "FL",
+    "county": "",
+    "city": "",
+    "level": 0,
+    "candidateids": [
+      3,
+      4
+    ]
+  },
+  {
+    "seatid": 3,
+    "number": "2",
+    "name": "District 2",
+    "office": "U.S.House",
+    "state": "VA",
+    "county": "",
+    "city": "",
+    "level": 0,
+    "candidateids": [
+      5,
+      6
+    ]
   }
 ]

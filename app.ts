@@ -110,7 +110,7 @@ function deleteFolderRecursive(url) {
 
 
 
-            if (fs.statSync(curPath).isDirectory()) {
+            if (fs.statSync(curPath).isDirectory()) { 
                 deleteFolderRecursive(curPath);
 
             } else {

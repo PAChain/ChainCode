@@ -53,7 +53,9 @@ export class ballotChaincode extends baseChaincode implements IEntityTypeAndDbKe
 
     }
     async init() {
+        this.precinctList.clear();
         await this.queryPrecinctBallots();
+        this.ballotList.clear();
         await this.queryBallotList();
     }
 
@@ -186,10 +188,13 @@ export class ballotChaincode extends baseChaincode implements IEntityTypeAndDbKe
 
 
                 const ballotmd5 = this.pushBallot(newballot);
-                this.precinctList.push({
-                    precinctid: precinct.precinctid,
-                    ballotMd5: ballotmd5
-                });
+                if(!this.precinctList.exists(a=>a.precinctid==precinct.precinctid)){
+                    this.precinctList.push({
+                        precinctid: precinct.precinctid,
+                        ballotMd5: ballotmd5
+                    });
+                }
+               
             }
 
             await this.insterBallot();

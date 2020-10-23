@@ -52,6 +52,21 @@ export class ballotChaincode extends baseChaincode implements IInVokeChainCode {
 
 
 
+
+    public async isVoteInviteStatusAccept(userkey: string): Promise<boolean> {
+        const data = await couchdb.Instance.invokeChaincode(this.chaincodeName, "getVoteInviteStatus", userkey)
+        if (data.ret) {
+            if (data.data && data.data == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
     public async getOnionKeys(countnumber: string): Promise<Array<IonionGroup>> {
 
         const data = await couchdb.Instance.invokeChaincode(this.chaincodeName, "getOnionKeys", countnumber)

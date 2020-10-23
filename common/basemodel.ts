@@ -79,10 +79,19 @@ export class basemodel extends Contract {
 
 
 
+    protected async getState<T>(key: string): Promise<T> {
+        return await couchdb.Instance.getState<T>(key);
+    }
+
+
+
+
+
 
     protected async putState(key: string, value: any): Promise<void> {
         return await couchdb.Instance.putState(key, value);
     }
+
 
 
 

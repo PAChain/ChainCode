@@ -41,6 +41,7 @@ export class tool {
 
 
     static ConvertChaincodeResponseToResult(respone: ChaincodeResponse): IResult {
+        log.debugger(`convert result: ${JSON.stringify(respone)}`)
         let data: IResult = { ret: false };
         if (respone.status == 200) {
             const json = Buffer.from(respone.payload).toString("utf8");
@@ -50,5 +51,14 @@ export class tool {
             log.error(respone.message);
         }
         return data;
+    }
+
+    
+
+
+
+
+     static cloneObject(data: any) {
+        return JSON.parse(JSON.stringify(data));
     }
 }

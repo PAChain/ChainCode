@@ -12,6 +12,8 @@ import { precinctModel } from "./models/precinct";
 import { candidateModel } from "./models/candidate";
 import { baseapp } from "../common/baseapp";
 import { onionModel } from "./models/onion";
+import { voteInviteHistory } from "./models/voteInviteHistory";
+import { tool } from "../common/tools/tool";
 
 
 
@@ -40,9 +42,19 @@ export class app extends baseapp {
     public async queryAllElection(ctx: Context): Promise<IResult> {
         this.updateCtx(ctx);
         const data = await electionModel.Instance.queryAllElection();
+
+        let electionlist = tool.cloneObject(data) as Array<IElection>;
+
+        if (electionlist && electionlist.length) {
+            let isopenvoting = await voteChaincode.Instance.getDeCodeVodedStatus();
+            for (var i = 0; i < electionlist.length; i++) {
+                electionlist[i]["isopenvoting"] = isopenvoting;
+            }
+        }
+
         return {
             ret: true,
-            data: data
+            data: electionlist
         }
     }
 
@@ -124,6 +136,64 @@ export class app extends baseapp {
             data: data
         }
     }
+
+
+
+
+
+
+
+    public async setInviteAllUser(ctx: Context, date: string): Promise<IResult> {
+        this.updateCtx(ctx);
+        await voteInviteHistory.Instance.setInviteAllUser(date);
+        return {
+            ret: true,
+            data: true
+        }
+    }
+
+
+
+    public async setVoteInvite(ctx: Context, userkey: string, status: number, date: string): Promise<IResult> {
+        this.updateCtx(ctx);
+        await voteInviteHistory.Instance.setVoteInvite(userkey, status, date);
+        return {
+            ret: true,
+            data: true
+        }
+    }
+
+
+
+    public async getVoteInvite(ctx: Context, userkey: string): Promise<IResult> {
+        this.updateCtx(ctx);
+        const data: number = await voteInviteHistory.Instance.getVoteInvite(userkey);
+        return {
+            ret: true,
+            data: data
+        }
+    }
+    public async getVoteInviteStatus(ctx: Context, userkey: string): Promise<IResult> {
+        this.updateCtx(ctx);
+        const data: number = await voteInviteHistory.Instance.getVoteInviteStatus(userkey);
+        return {
+            ret: true,
+            data: data
+        }
+    }
+
+
+
+
+    public async getVoteInviteStatistic(ctx: Context): Promise<IResult> {
+        this.updateCtx(ctx);
+        const data = await voteInviteHistory.Instance.getStatistic();
+        return {
+            ret: true,
+            data: data
+        }
+    }
+
 
 
 

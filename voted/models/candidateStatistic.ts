@@ -70,12 +70,12 @@ export class candidateStatistic extends basemodel {
 
         if (cleartextVotedData && cleartextVotedData.length > 0) {
             for (let i = 0; i < cleartextVotedData.length; i++) {
-                for (let j = 0; j < cleartextVotedData[i].candidateIDs.length; j++) {
+                for (let j = 0; j < cleartextVotedData[i].candidates.length; j++) {
                     log.debugger(JSON.stringify(cleartextVotedData));
                     let item = new ICandidateStatistic();
                     item.electionid = cleartextVotedData[i].electionID;
                     item.seatid = cleartextVotedData[i].seatID;
-                    item.candidateid = cleartextVotedData[i].candidateIDs[j];
+                    item.candidateid = cleartextVotedData[i].candidates[j].id;
                     await this.setStatistic(item);
                 }
 

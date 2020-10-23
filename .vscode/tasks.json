@@ -9,7 +9,7 @@
 				"$tsc-watch"
 			],
 			"group": "build",
-			"label": "tsc: monitor - tsconfig.json"
+			"label": "tsc:  - tsconfig.json"
 		}
 	]
 }

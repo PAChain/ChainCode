@@ -51,6 +51,18 @@ export class couchdb {
 
 
 
+    public async getState<T>(key: string): Promise<T> {
+        log.debugger(`getState key : ${key}`);
+        return await this.first<T>({
+            _id: key,
+        })
+    }
+
+
+
+
+
+
     public async putState(key: string, value: any): Promise<void> {
         log.debugger(`putState key : ${key} value :${JSON.stringify(value)}`);
         await this.ctx.stub.putState(`${key}`, Buffer.from(JSON.stringify(value)));
@@ -148,9 +160,10 @@ export class couchdb {
         if (params == undefined) {
             params = [];
         }
-        log.debugger(`invokeChaincode  chaincode:${chaincode}  action:${action} params:${params}`);
+        const channelID = this.ctx.stub.getChannelID();
+        log.debugger(`invokeChaincode  channel:${channelID}  chaincode:${chaincode}  action:${action} params:${params}`);
         params.unshift(action);
-        const respone = await this.ctx.stub.invokeChaincode(chaincode, params, this.ctx.stub.getChannelID());
+        const respone = await this.ctx.stub.invokeChaincode(chaincode, params, channelID);
         const data = tool.ConvertChaincodeResponseToResult(respone);
         return data;
     }

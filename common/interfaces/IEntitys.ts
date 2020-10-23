@@ -54,6 +54,10 @@ export interface ICandidate extends IEntityBase {
     party: party;
     photo: string;
 }
+export interface ICandidateshort {
+    id: number;
+    name: string;
+}
 
 
 
@@ -231,7 +235,7 @@ export interface ICleartextVoted {
 export interface ICleartextVotedData {
     electionID: number;
     seatID: number;
-    candidateIDs: Array<number>;
+    candidates: Array<ICandidateshort>;
 }
 
 

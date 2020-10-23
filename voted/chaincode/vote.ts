@@ -76,10 +76,31 @@ export class voteChaincode extends baseChaincode implements IEntityTypeAndDbKey 
 
 
     async votelist(userkey: string, votingdate: string, ballotnumber: string, votelist: Array<IVote>): Promise<boolean> {
+
+        const existBallot = await ballotChaincode.Instance.existBallotByBallotNumber(ballotnumber);
+
+        if (!existBallot) {
+            throw new Error(`nonexistent ballotnumber:${ballotnumber}`); 
+        }
+        const isaccept = await ballotChaincode.Instance.isVoteInviteStatusAccept(userkey);
+
+        if(!isaccept){
+            throw new Error(`vote invite status not accept`); 
+        }
+        const existUser = await userChaincode.Instance.existUser(userkey); 
+
+        if (!existUser) {
+            throw new Error(`nonexistent user:${userkey}`); 
+        }
+        const existvote = await this.isvoted(userkey);
+
+        if (existvote) {
+            throw new Error(`They've already voted:${userkey}`); 
+        }
         if (votelist != undefined && votelist.length > 0) {
 
             for (let i = 0; i < votelist.length; i++) {
-                await this.vote(userkey, ballotnumber, votelist[i]);
+                await this.vote(userkey, votelist[i]);
             }
             await this.insterVoted(userkey, votingdate, votelist[0].votingnumber);
         }
@@ -91,20 +112,8 @@ export class voteChaincode extends baseChaincode implements IEntityTypeAndDbKey 
 
 
 
-    async vote(userkey: string, ballotnumber: string, vote: IVote): Promise<boolean> {
+    async vote(userkey: string, vote: IVote): Promise<boolean> {
 
-        const existBallot = await ballotChaincode.Instance.existBallotByBallotNumber(ballotnumber);
-        if (!existBallot) {
-            throw new Error(`nonexistent ballotnumber:${ballotnumber}`);
-        }
-        const existUser = await userChaincode.Instance.existUser(userkey);
-        if (!existUser) {
-            throw new Error(`nonexistent user:${userkey}`);
-        }
-        const existvote = await this.isvoted(userkey);
-        if (existvote) {
-            throw new Error(`They've already voted:${userkey}`);
-        }
         vote.type = this.type;
         await this.putState(this.formatDbKey(vote.votingnumber, vote.onionkey), vote);
         await this.insterDecodeVoted(vote);
